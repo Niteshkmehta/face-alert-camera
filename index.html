@@ -8,11 +8,10 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
-<title>Library Alert Camera</title>
+<title>MANAGE Library - Smart Visitors Entry System</title>
 
-<!-- JSZip for browser-side ZIP creation -->
+<!-- JSZip: used only for creating ZIP downloads -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
 
 <style>
 
@@ -26,12 +25,8 @@
 
 body {
     margin: 0;
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background: #f4f6f8;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f3f6f9;
     color: #1f2937;
 }
 
@@ -41,17 +36,14 @@ body {
 ===================================================== */
 
 .header {
-
-    background:
-        linear-gradient(
-            135deg,
-            #17365d,
-            #245b8f
-        );
+    background: linear-gradient(
+        135deg,
+        #17365d,
+        #245b8f
+    );
 
     color: white;
-
-    padding: 22px 30px;
+    padding: 20px 28px;
 
     box-shadow:
         0 2px 8px rgba(0,0,0,0.15);
@@ -59,25 +51,19 @@ body {
 
 .header-inner {
 
-    max-width: 1450px;
-
+    max-width: 1500px;
     margin: auto;
 
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
 
     gap: 20px;
 }
 
 .brand {
-
     display: flex;
-
     align-items: center;
-
     gap: 14px;
 }
 
@@ -92,21 +78,19 @@ body {
         rgba(255,255,255,0.15);
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
-    font-size: 28px;
+    font-size: 27px;
 }
 
 .brand h1 {
 
     margin: 0;
 
-    font-size: 28px;
+    font-size: 27px;
 
-    letter-spacing: 0.2px;
+    letter-spacing: 0.3px;
 }
 
 .brand p {
@@ -118,15 +102,9 @@ body {
     font-size: 14px;
 }
 
-
-/* =====================================================
-   SYSTEM STATUS
-===================================================== */
-
 .system-status {
 
     display: flex;
-
     align-items: center;
 
     gap: 9px;
@@ -139,8 +117,6 @@ body {
         rgba(255,255,255,0.12);
 
     font-size: 14px;
-
-    white-space: nowrap;
 }
 
 .status-dot {
@@ -158,8 +134,7 @@ body {
     background: #22c55e;
 
     box-shadow:
-        0 0 10px
-        rgba(34,197,94,0.8);
+        0 0 10px rgba(34,197,94,0.8);
 }
 
 
@@ -169,16 +144,16 @@ body {
 
 .container {
 
-    max-width: 1450px;
+    max-width: 1500px;
 
-    margin: 25px auto;
+    margin: 22px auto;
 
-    padding: 0 20px;
+    padding: 0 18px;
 }
 
 
 /* =====================================================
-   DASHBOARD STATS
+   TOP STATISTICS
 ===================================================== */
 
 .stats {
@@ -188,9 +163,9 @@ body {
     grid-template-columns:
         repeat(4, 1fr);
 
-    gap: 15px;
+    gap: 14px;
 
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .stat-card {
@@ -199,11 +174,10 @@ body {
 
     border-radius: 10px;
 
-    padding: 18px 20px;
+    padding: 15px 18px;
 
     box-shadow:
-        0 2px 8px
-        rgba(0,0,0,0.06);
+        0 2px 7px rgba(0,0,0,0.06);
 
     border-left:
         4px solid #245b8f;
@@ -213,7 +187,7 @@ body {
 
     color: #6b7280;
 
-    font-size: 13px;
+    font-size: 12px;
 
     text-transform: uppercase;
 
@@ -222,18 +196,18 @@ body {
 
 .stat-value {
 
-    font-size: 28px;
+    color: #17365d;
+
+    font-size: 25px;
 
     font-weight: bold;
 
-    margin-top: 5px;
-
-    color: #17365d;
+    margin-top: 4px;
 }
 
 
 /* =====================================================
-   MAIN GRID
+   THREE COLUMN LAYOUT
 ===================================================== */
 
 .main-grid {
@@ -241,10 +215,11 @@ body {
     display: grid;
 
     grid-template-columns:
-        minmax(0, 1fr)
-        400px;
+        260px
+        minmax(450px, 1fr)
+        390px;
 
-    gap: 20px;
+    gap: 18px;
 
     align-items: start;
 }
@@ -258,142 +233,172 @@ body {
 
     background: white;
 
-    border-radius: 12px;
+    border-radius: 11px;
 
-    padding: 20px;
+    padding: 17px;
 
     box-shadow:
-        0 2px 10px
-        rgba(0,0,0,0.07);
+        0 2px 9px rgba(0,0,0,0.07);
 }
 
 .card-title {
 
     display: flex;
 
-    justify-content: space-between;
-
     align-items: center;
 
-    margin-bottom: 15px;
+    justify-content: space-between;
+
+    margin-bottom: 14px;
 }
 
 .card-title h2 {
 
     margin: 0;
 
-    font-size: 19px;
-
     color: #17365d;
+
+    font-size: 17px;
 }
 
 
 /* =====================================================
-   CAMERA
+   LEFT SETTINGS
 ===================================================== */
 
-.camera-area {
+.left-panel {
 
-    position: relative;
+    position: sticky;
 
-    background: #090909;
-
-    border-radius: 9px;
-
-    overflow: hidden;
-
-    aspect-ratio: 16 / 9;
+    top: 15px;
 }
 
-video {
+.setting-group {
 
-    width: 100%;
+    border-bottom:
+        1px solid #e5e7eb;
 
-    height: 100%;
+    padding-bottom: 15px;
+
+    margin-bottom: 15px;
+}
+
+.setting-group:last-child {
+
+    border-bottom: none;
+
+    margin-bottom: 0;
+
+    padding-bottom: 0;
+}
+
+.setting-heading {
+
+    color: #374151;
+
+    font-weight: bold;
+
+    font-size: 13px;
+
+    margin-bottom: 9px;
+}
+
+.setting-label {
 
     display: block;
 
-    object-fit: cover;
-
-    background: #000;
-}
-
-
-/* CAMERA OVERLAY */
-
-.camera-overlay {
-
-    position: absolute;
-
-    top: 12px;
-
-    left: 12px;
-
-    right: 12px;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    pointer-events: none;
-}
-
-.camera-badge {
-
-    padding: 6px 11px;
-
-    border-radius: 15px;
-
-    background:
-        rgba(0,0,0,0.65);
-
-    color: white;
+    color: #6b7280;
 
     font-size: 12px;
+
+    margin-bottom: 5px;
 }
 
-.camera-badge.live {
+select {
 
-    background:
-        rgba(22,163,74,0.9);
+    width: 100%;
+
+    padding: 8px;
+
+    border:
+        1px solid #d1d5db;
+
+    border-radius: 6px;
+
+    background: white;
+
+    font-size: 13px;
+}
+
+input[type="range"] {
+
+    width: 100%;
+}
+
+.range-value {
+
+    font-size: 12px;
+
+    color: #245b8f;
+
+    font-weight: bold;
+
+    float: right;
 }
 
 
-/* =====================================================
-   CONTROLS
-===================================================== */
+/* CAMERA STATUS */
 
-.controls {
+.camera-status-box {
+
+    padding: 10px;
+
+    border-radius: 7px;
+
+    background: #f3f4f6;
+
+    font-size: 13px;
+
+    margin-bottom: 10px;
+}
+
+.camera-status-box.online {
+
+    background: #dcfce7;
+
+    color: #166534;
+}
+
+.camera-status-box.offline {
+
+    background: #f3f4f6;
+
+    color: #6b7280;
+}
+
+
+/* LEFT BUTTONS */
+
+.control-buttons {
 
     display: flex;
 
-    flex-wrap: wrap;
+    flex-direction: column;
 
-    gap: 10px;
-
-    margin-top: 15px;
+    gap: 8px;
 }
 
 button {
 
     border: none;
 
-    border-radius: 7px;
+    border-radius: 6px;
 
-    padding: 11px 17px;
+    padding: 10px 13px;
 
-    font-size: 14px;
+    font-size: 13px;
 
     cursor: pointer;
-
-    transition:
-        opacity 0.2s,
-        transform 0.1s;
-}
-
-button:hover {
-
-    transform: translateY(-1px);
 }
 
 button:disabled {
@@ -401,8 +406,6 @@ button:disabled {
     opacity: 0.5;
 
     cursor: not-allowed;
-
-    transform: none;
 }
 
 .btn-start {
@@ -428,21 +431,112 @@ button:disabled {
 
 .btn-gray {
 
-    background: #6b7280;
+    background: #64748b;
 
     color: white;
 }
 
 
+/* DETECTION STATUS */
+
+.detection-status {
+
+    padding: 9px;
+
+    background: #f8fafc;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+
+    color: #475569;
+
+    line-height: 1.5;
+}
+
+
 /* =====================================================
-   STATUS BOX
+   MIDDLE LIVE CAMERA
 ===================================================== */
 
-.status-box {
+.live-panel {
 
-    margin-top: 14px;
+    min-width: 0;
+}
 
-    padding: 12px 14px;
+.camera-container {
+
+    background: #050505;
+
+    border-radius: 9px;
+
+    overflow: hidden;
+
+    position: relative;
+
+    aspect-ratio: 16 / 9;
+
+    width: 100%;
+}
+
+video {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    background: black;
+}
+
+.camera-overlay {
+
+    position: absolute;
+
+    top: 12px;
+
+    left: 12px;
+
+    right: 12px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    pointer-events: none;
+}
+
+.camera-badge {
+
+    padding: 6px 10px;
+
+    border-radius: 15px;
+
+    background:
+        rgba(0,0,0,0.65);
+
+    color: white;
+
+    font-size: 11px;
+}
+
+.camera-badge.live {
+
+    background:
+        rgba(22,163,74,0.9);
+}
+
+
+/* MIDDLE STATUS */
+
+.live-status {
+
+    margin-top: 10px;
+
+    padding: 10px 12px;
 
     border-radius: 7px;
 
@@ -450,17 +544,17 @@ button:disabled {
 
     color: #4b5563;
 
-    font-size: 14px;
+    font-size: 13px;
 }
 
-.status-box.success {
+.live-status.success {
 
     background: #dcfce7;
 
     color: #166534;
 }
 
-.status-box.motion {
+.live-status.motion {
 
     background: #fef3c7;
 
@@ -469,7 +563,7 @@ button:disabled {
     font-weight: bold;
 }
 
-.status-box.error {
+.live-status.error {
 
     background: #fee2e2;
 
@@ -478,63 +572,190 @@ button:disabled {
 
 
 /* =====================================================
-   SETTINGS
+   RIGHT PHOTO HISTORY
 ===================================================== */
 
-.settings {
+.history-card {
 
-    display: grid;
+    max-height: 780px;
 
-    grid-template-columns:
-        1fr 1fr 1fr;
-
-    gap: 12px;
-
-    margin-top: 15px;
+    overflow-y: auto;
 }
 
-.setting {
+.history-top {
 
-    background: #f8fafc;
+    position: sticky;
 
-    border:
+    top: -17px;
+
+    z-index: 5;
+
+    background: white;
+
+    padding-bottom: 13px;
+
+    border-bottom:
         1px solid #e5e7eb;
 
-    border-radius: 8px;
-
-    padding: 12px;
+    margin-bottom: 8px;
 }
 
-.setting label {
+.history-top h2 {
 
-    display: block;
+    margin: 0 0 4px;
+
+    color: #17365d;
+
+    font-size: 18px;
+}
+
+.history-summary {
+
+    color: #6b7280;
+
+    font-size: 12px;
+
+    margin-bottom: 10px;
+}
+
+.day-section {
+
+    border-bottom:
+        1px solid #e5e7eb;
+
+    padding: 14px 0;
+}
+
+.day-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 7px;
+
+    margin-bottom: 10px;
+}
+
+.day-title {
+
+    color: #17365d;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+.day-count {
+
+    color: #6b7280;
+
+    font-size: 11px;
+
+    margin-top: 3px;
+}
+
+.download-day {
+
+    background: #2563eb;
+
+    color: white;
+
+    padding: 6px 8px;
+
+    font-size: 10px;
+}
+
+
+/* PHOTO ITEM */
+
+.photo-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 6px;
+
+    margin-bottom: 5px;
+
+    border-radius: 6px;
+
+    background: #f8fafc;
+}
+
+.photo-item:hover {
+
+    background: #eef2f7;
+}
+
+.photo-thumb {
+
+    width: 67px;
+
+    height: 46px;
+
+    object-fit: cover;
+
+    border-radius: 4px;
+
+    cursor: pointer;
+
+    background: #111;
+}
+
+.photo-info {
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+.photo-time {
 
     font-size: 12px;
 
     font-weight: bold;
 
-    color: #4b5563;
-
-    margin-bottom: 7px;
+    color: #374151;
 }
 
-.setting select {
+.photo-type {
 
-    width: 100%;
+    font-size: 10px;
 
-    padding: 8px;
+    color: #9ca3af;
 
-    border:
-        1px solid #d1d5db;
-
-    border-radius: 5px;
-
-    background: white;
+    margin-top: 2px;
 }
 
-.setting input {
+.photo-download {
 
-    width: 100%;
+    background: #64748b;
+
+    color: white;
+
+    padding: 5px 7px;
+
+    font-size: 10px;
+}
+
+
+/* EMPTY */
+
+.empty-history {
+
+    text-align: center;
+
+    padding: 40px 10px;
+
+    color: #9ca3af;
+
+    font-size: 13px;
 }
 
 
@@ -542,9 +763,9 @@ button:disabled {
    LATEST PHOTO
 ===================================================== */
 
-.latest-photo {
+.latest-card {
 
-    margin-top: 20px;
+    margin-top: 18px;
 }
 
 .latest-image-container {
@@ -553,7 +774,7 @@ button:disabled {
 
     border-radius: 8px;
 
-    min-height: 150px;
+    min-height: 100px;
 
     display: flex;
 
@@ -568,8 +789,6 @@ button:disabled {
 
     max-width: 100%;
 
-    max-height: 420px;
-
     display: none;
 }
 
@@ -577,199 +796,7 @@ button:disabled {
 
     color: #9ca3af;
 
-    font-size: 14px;
-}
-
-
-/* =====================================================
-   HISTORY
-===================================================== */
-
-.history-card {
-
-    max-height: 820px;
-
-    overflow-y: auto;
-
-    position: relative;
-}
-
-.history-top {
-
-    position: sticky;
-
-    top: -20px;
-
-    z-index: 5;
-
-    background: white;
-
-    padding-bottom: 14px;
-
-    border-bottom:
-        1px solid #e5e7eb;
-
-    margin-bottom: 8px;
-}
-
-.history-top h2 {
-
-    margin: 0 0 5px;
-
-    color: #17365d;
-
-    font-size: 19px;
-}
-
-.history-summary {
-
-    color: #6b7280;
-
-    font-size: 13px;
-
-    margin-bottom: 12px;
-}
-
-.day-section {
-
-    border-bottom:
-        1px solid #e5e7eb;
-
-    padding: 15px 0;
-}
-
-.day-header {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    gap: 8px;
-
-    margin-bottom: 10px;
-}
-
-.day-title {
-
-    font-weight: bold;
-
-    color: #17365d;
-
-    font-size: 15px;
-}
-
-.day-count {
-
-    color: #6b7280;
-
     font-size: 12px;
-
-    margin-top: 3px;
-}
-
-.download-day {
-
-    background: #2563eb;
-
-    color: white;
-
-    padding: 7px 10px;
-
-    font-size: 11px;
-}
-
-
-/* =====================================================
-   PHOTO ITEM
-===================================================== */
-
-.photo-item {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 9px;
-
-    padding: 7px;
-
-    margin-bottom: 6px;
-
-    border-radius: 7px;
-
-    background: #f8fafc;
-}
-
-.photo-item:hover {
-
-    background: #eef2f7;
-}
-
-.photo-thumb {
-
-    width: 68px;
-
-    height: 48px;
-
-    object-fit: cover;
-
-    border-radius: 5px;
-
-    background: #111;
-
-    cursor: pointer;
-}
-
-.photo-info {
-
-    flex: 1;
-
-    min-width: 0;
-}
-
-.photo-time {
-
-    font-size: 13px;
-
-    font-weight: bold;
-
-    color: #374151;
-}
-
-.photo-type {
-
-    font-size: 11px;
-
-    color: #9ca3af;
-
-    margin-top: 2px;
-}
-
-.photo-download {
-
-    padding: 6px 8px;
-
-    background: #64748b;
-
-    color: white;
-
-    font-size: 11px;
-}
-
-
-/* =====================================================
-   EMPTY HISTORY
-===================================================== */
-
-.empty-history {
-
-    text-align: center;
-
-    padding: 45px 15px;
-
-    color: #9ca3af;
 }
 
 
@@ -783,9 +810,9 @@ button:disabled {
 
     position: fixed;
 
-    z-index: 1000;
-
     inset: 0;
+
+    z-index: 1000;
 
     background:
         rgba(0,0,0,0.88);
@@ -812,7 +839,7 @@ button:disabled {
 
     right: 25px;
 
-    top: 15px;
+    top: 12px;
 
     color: white;
 
@@ -828,17 +855,17 @@ button:disabled {
 
 .footer {
 
-    max-width: 1450px;
+    text-align: center;
+
+    max-width: 1500px;
 
     margin: 20px auto;
 
-    padding: 15px 20px;
-
-    text-align: center;
+    padding: 12px;
 
     color: #9ca3af;
 
-    font-size: 12px;
+    font-size: 11px;
 }
 
 
@@ -846,11 +873,30 @@ button:disabled {
    RESPONSIVE
 ===================================================== */
 
-@media (max-width: 1050px) {
+@media (max-width: 1200px) {
+
+    .main-grid {
+
+        grid-template-columns:
+            230px
+            minmax(400px, 1fr)
+            350px;
+
+    }
+
+}
+
+@media (max-width: 1000px) {
 
     .main-grid {
 
         grid-template-columns: 1fr;
+
+    }
+
+    .left-panel {
+
+        position: static;
 
     }
 
@@ -862,8 +908,14 @@ button:disabled {
 
 }
 
+@media (max-width: 700px) {
 
-@media (max-width: 750px) {
+    .stats {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
 
     .header-inner {
 
@@ -873,33 +925,13 @@ button:disabled {
 
     }
 
-    .stats {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-
-    }
-
-    .settings {
-
-        grid-template-columns: 1fr;
-
-    }
-
 }
-
 
 @media (max-width: 500px) {
 
     .stats {
 
         grid-template-columns: 1fr;
-
-    }
-
-    .brand h1 {
-
-        font-size: 22px;
 
     }
 
@@ -921,7 +953,6 @@ button:disabled {
 
 <div class="header-inner">
 
-
 <div class="brand">
 
 <div class="brand-icon">
@@ -931,11 +962,11 @@ button:disabled {
 <div>
 
 <h1>
-Library Alert Camera
+MANAGE LIBRARY
 </h1>
 
 <p>
-Smart Motion Detection & Photo Monitoring System
+Smart Visitors Entry System
 </p>
 
 </div>
@@ -959,16 +990,11 @@ Camera Off
 
 </div>
 
-
 </div>
 
 </header>
 
 
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
 
 <div class="container">
 
@@ -1000,7 +1026,7 @@ OFF
 <div class="stat-card">
 
 <div class="stat-label">
-Motion Events
+Detected Events
 </div>
 
 <div
@@ -1053,34 +1079,250 @@ class="stat-value">
 
 
 <!-- =====================================================
-     MAIN GRID
+     THREE COLUMN AREA
 ===================================================== -->
 
 <div class="main-grid">
 
 
 <!-- ===================================================
-     LEFT
+     LEFT — SETTINGS
 =================================================== -->
 
-<div>
-
-
-<!-- CAMERA CARD -->
-
-<div class="card">
+<div class="card left-panel">
 
 
 <div class="card-title">
 
 <h2>
-🎥 Live Camera
+⚙ Camera & Detection
 </h2>
 
 </div>
 
 
-<div class="camera-area">
+
+<!-- CAMERA -->
+
+<div class="setting-group">
+
+<div class="setting-heading">
+Camera
+</div>
+
+
+<div
+id="cameraStatusBox"
+class="camera-status-box offline">
+
+⚪ Camera Offline
+
+</div>
+
+
+<div class="control-buttons">
+
+<button
+id="startButton"
+class="btn-start">
+
+▶ Start Monitoring
+
+</button>
+
+
+<button
+id="stopButton"
+class="btn-stop"
+disabled>
+
+■ Stop Monitoring
+
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- MOTION -->
+
+<div class="setting-group">
+
+<div class="setting-heading">
+Motion Detection
+</div>
+
+
+<label class="setting-label">
+Sensitivity
+</label>
+
+
+<select id="sensitivity">
+
+<option value="low">
+Low
+</option>
+
+<option value="medium">
+Medium
+</option>
+
+<option value="high"
+selected>
+High
+</option>
+
+</select>
+
+
+<br><br>
+
+
+<label class="setting-label">
+
+Cooldown
+
+<span
+id="cooldownValue"
+class="range-value">
+
+5 sec
+
+</span>
+
+</label>
+
+
+<input
+id="cooldown"
+type="range"
+min="2"
+max="60"
+value="5">
+
+</div>
+
+
+
+<!-- PHOTO -->
+
+<div class="setting-group">
+
+<div class="setting-heading">
+Photo Settings
+</div>
+
+
+<label class="setting-label">
+Photo Quality
+</label>
+
+
+<select id="photoQuality">
+
+<option value="verylow">
+Very Low — 320×180
+</option>
+
+<option value="low"
+selected>
+Low — 480×270
+</option>
+
+<option value="medium">
+Medium — 640×360
+</option>
+
+<option value="high">
+High — 1280×720
+</option>
+
+</select>
+
+
+<br><br>
+
+
+<div
+id="qualityInfo"
+class="detection-status">
+
+480 × 270 pixels<br>
+JPEG quality: 40%
+
+</div>
+
+</div>
+
+
+
+<!-- DETECTION INFO -->
+
+<div class="setting-group">
+
+<div class="setting-heading">
+System Information
+</div>
+
+
+<div class="detection-status">
+
+<strong>Detected Events:</strong>
+
+<span
+id="leftMotionCount">
+
+0
+</span>
+
+<br><br>
+
+<strong>Today's Photos:</strong>
+
+<span
+id="leftTodayCount">
+
+0
+</span>
+
+<br><br>
+
+<strong>Total Stored:</strong>
+
+<span
+id="leftPhotoCount">
+
+0
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================
+     MIDDLE — LIVE CAMERA ONLY
+=================================================== -->
+
+<div class="card live-panel">
+
+
+<div class="card-title">
+
+<h2>
+🎥 Live Camera Feed
+</h2>
+
+</div>
+
+
+<div class="camera-container">
 
 <video
 id="camera"
@@ -1113,157 +1355,79 @@ MOTION DETECTION
 </div>
 
 
-
-<!-- CONTROLS -->
-
-<div class="controls">
-
-<button
-id="startButton"
-class="btn-start">
-
-▶ Start Monitoring
-
-</button>
-
-
-<button
-id="stopButton"
-class="btn-stop"
-disabled>
-
-■ Stop Monitoring
-
-</button>
-
-</div>
-
-
-
-<!-- STATUS -->
-
 <div
 id="status"
-class="status-box">
+class="live-status">
 
 Camera is stopped.
 
 </div>
 
 
-
-<!-- SETTINGS -->
-
-<div class="settings">
-
-
-<!-- SENSITIVITY -->
-
-<div class="setting">
-
-<label>
-Motion Sensitivity
-</label>
-
-
-<select
-id="sensitivity">
-
-<option value="low">
-Low
-</option>
-
-<option value="medium">
-Medium
-</option>
-
-<option value="high"
-selected>
-
-High
-
-</option>
-
-</select>
-
-</div>
-
-
-<!-- PHOTO QUALITY -->
-
-<div class="setting">
-
-<label>
-Photo Quality
-</label>
-
-
-<select
-id="photoQuality">
-
-<option value="verylow">
-Very Low — 320×180
-</option>
-
-<option value="low"
-selected>
-
-Low — 480×270
-
-</option>
-
-<option value="medium">
-
-Medium — 640×360
-
-</option>
-
-<option value="high">
-
-High — 1280×720
-
-</option>
-
-</select>
-
-</div>
-
-
-<!-- COOLDOWN -->
-
-<div class="setting">
-
-<label>
-
-Capture Cooldown:
-<span id="cooldownValue">
-5
-</span>s
-
-</label>
-
-
-<input
-id="cooldown"
-type="range"
-min="2"
-max="60"
-value="5">
-
-</div>
-
-
-</div>
-
 </div>
 
 
 
 <!-- ===================================================
-     LATEST PHOTO
+     RIGHT — PHOTO HISTORY
 =================================================== -->
 
-<div class="card latest-photo">
+<div
+class="card history-card">
+
+
+<div class="history-top">
+
+<h2>
+📸 Photo History
+</h2>
+
+
+<div
+id="historySummary"
+class="history-summary">
+
+Loading history...
+
+</div>
+
+
+<button
+id="downloadAllButton"
+class="btn-blue"
+style="width:100%;">
+
+⬇ Download All Photos
+
+</button>
+
+</div>
+
+
+<div
+id="history">
+
+<div class="empty-history">
+
+No photographs captured yet.
+
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     LATEST PHOTO
+===================================================== -->
+
+<div class="card latest-card">
 
 
 <div class="card-title">
@@ -1293,7 +1457,10 @@ No photograph captured yet.
 </div>
 
 
-<div class="controls">
+<div
+style="
+margin-top:10px;
+">
 
 <a
 id="downloadLatest"
@@ -1301,86 +1468,31 @@ class="btn-blue"
 style="
 display:none;
 text-decoration:none;
+padding:8px 12px;
+border-radius:6px;
+font-size:12px;
 ">
 
-⬇ Download Latest
+⬇ Download Latest Photo
 
 </a>
 
 </div>
 
-
 </div>
 
-
-</div>
-
-
-
-<!-- ===================================================
-     RIGHT — HISTORY
-=================================================== -->
-
-<div
-class="card history-card">
-
-
-<div class="history-top">
-
-<h2>
-📸 Photo History
-</h2>
-
-
-<div
-id="historySummary"
-class="history-summary">
-
-Loading history...
-
-</div>
-
-
-<button
-id="downloadAllButton"
-class="btn-blue">
-
-⬇ Download All Photos
-
-</button>
-
-</div>
-
-
-<div
-id="history">
-
-<div class="empty-history">
-
-No photographs captured yet.
-
-</div>
-
-</div>
-
-
-</div>
-
-
-</div>
 
 </div>
 
 
 
 <!-- =====================================================
-     PHOTO MODAL
+     PHOTO VIEWER
 ===================================================== -->
 
 <div
 id="photoModal"
 class="modal">
-
 
 <span
 id="closeModal"
@@ -1390,7 +1502,6 @@ class="close-modal">
 
 </span>
 
-
 <img
 id="modalImage"
 alt="Photo preview">
@@ -1399,19 +1510,15 @@ alt="Photo preview">
 
 
 
-<!-- =====================================================
-     FOOTER
-===================================================== -->
-
 <div class="footer">
 
 <strong>
-Library Alert Camera
+MANAGE LIBRARY
 </strong>
 
 &nbsp;|&nbsp;
 
-Library Monitoring System
+Smart Visitors Entry System
 
 &nbsp;|&nbsp;
 
@@ -1428,9 +1535,8 @@ Photos stored locally in this browser
    DATABASE
 ===================================================== */
 
-
 const DB_NAME =
-"libraryAlertCameraDB";
+"manageLibraryVisitorsDB";
 
 const DB_VERSION =
 1;
@@ -1445,7 +1551,6 @@ let db = null;
 /* =====================================================
    OPEN DATABASE
 ===================================================== */
-
 
 function openDatabase() {
 
@@ -1534,7 +1639,6 @@ function openDatabase() {
    SAVE PHOTO
 ===================================================== */
 
-
 function savePhotoToDatabase(
     blob,
     date,
@@ -1608,7 +1712,6 @@ function savePhotoToDatabase(
    GET ALL PHOTOS
 ===================================================== */
 
-
 function getAllPhotos() {
 
     return new Promise(
@@ -1661,7 +1764,6 @@ function getAllPhotos() {
    DATE KEY
 ===================================================== */
 
-
 function getDateKey(date) {
 
     const year =
@@ -1670,12 +1772,18 @@ function getDateKey(date) {
     const month =
         String(
             date.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
     const day =
         String(
             date.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
 
     return (
@@ -1693,7 +1801,6 @@ function getDateKey(date) {
 /* =====================================================
    DISPLAY DATE
 ===================================================== */
-
 
 function displayDate(
     dateString
@@ -1732,7 +1839,6 @@ function displayDate(
    RENDER HISTORY
 ===================================================== */
 
-
 async function renderHistory() {
 
     const history =
@@ -1758,6 +1864,10 @@ async function renderHistory() {
     );
 
 
+    /*
+    Total photos
+    */
+
     summary.textContent =
         photos.length +
         " photo" +
@@ -1775,8 +1885,14 @@ async function renderHistory() {
         photos.length;
 
 
+    document.getElementById(
+        "leftPhotoCount"
+    ).textContent =
+        photos.length;
+
+
     /*
-    Today's count.
+    Today's photos
     */
 
     const today =
@@ -1798,7 +1914,19 @@ async function renderHistory() {
         todayPhotos.length;
 
 
-    if (photos.length === 0) {
+    document.getElementById(
+        "leftTodayCount"
+    ).textContent =
+        todayPhotos.length;
+
+
+    /*
+    Empty
+    */
+
+    if (
+        photos.length === 0
+    ) {
 
         history.innerHTML =
 
@@ -1823,9 +1951,12 @@ async function renderHistory() {
     photos.forEach(
         photo => {
 
-            if (!grouped[photo.date]) {
+            if (
+                !grouped[photo.date]
+            ) {
 
-                grouped[photo.date] = [];
+                grouped[photo.date] =
+                    [];
 
             }
 
@@ -1851,7 +1982,6 @@ async function renderHistory() {
 
     dates.forEach(
         date => {
-
 
             const section =
                 document.createElement(
@@ -1949,7 +2079,7 @@ async function renderHistory() {
 
 
             /*
-            Photos
+            Individual photos
             */
 
             grouped[date].forEach(
@@ -2083,9 +2213,8 @@ async function renderHistory() {
 
 
 /* =====================================================
-   DOWNLOAD PHOTO
+   INDIVIDUAL DOWNLOAD
 ===================================================== */
-
 
 function downloadPhoto(
     photo
@@ -2109,7 +2238,7 @@ function downloadPhoto(
 
     link.download =
 
-        "library-motion-" +
+        "MANAGE-Library-" +
 
         photo.date +
 
@@ -2148,7 +2277,6 @@ function downloadPhoto(
    DOWNLOAD DAY
 ===================================================== */
 
-
 async function downloadDay(
     date,
     photos,
@@ -2181,7 +2309,7 @@ async function downloadDay(
 
         const folder =
             zip.folder(
-                "library-alert-" +
+                "MANAGE-Library-" +
                 date
             );
 
@@ -2221,9 +2349,7 @@ async function downloadDay(
             await zip.generateAsync(
                 {
                     type: "blob",
-
-                    compression:
-                        "DEFLATE"
+                    compression: "DEFLATE"
                 }
             );
 
@@ -2246,7 +2372,7 @@ async function downloadDay(
 
         link.download =
 
-            "library-alert-" +
+            "MANAGE-Library-" +
             date +
             ".zip";
 
@@ -2302,7 +2428,6 @@ async function downloadDay(
 /* =====================================================
    DOWNLOAD ALL
 ===================================================== */
-
 
 async function downloadAllPhotos() {
 
@@ -2414,9 +2539,7 @@ async function downloadAllPhotos() {
             await zip.generateAsync(
                 {
                     type: "blob",
-
-                    compression:
-                        "DEFLATE"
+                    compression: "DEFLATE"
                 }
             );
 
@@ -2438,7 +2561,7 @@ async function downloadAllPhotos() {
 
 
         link.download =
-            "library-alert-all-photos.zip";
+            "MANAGE-Library-All-Photos.zip";
 
 
         document.body.appendChild(
@@ -2490,9 +2613,8 @@ async function downloadAllPhotos() {
 
 
 /* =====================================================
-   PHOTO MODAL
+   PHOTO VIEWER
 ===================================================== */
-
 
 function openPhoto(url) {
 
@@ -2573,7 +2695,7 @@ let stableFrames = 0;
 
 
 /*
-Small canvas for motion analysis.
+Motion analysis canvas.
 */
 
 const motionCanvas =
@@ -2644,6 +2766,12 @@ const statusDot =
     );
 
 
+const cameraStatusBox =
+    document.getElementById(
+        "cameraStatusBox"
+    );
+
+
 const sensitivity =
     document.getElementById(
         "sensitivity"
@@ -2653,6 +2781,12 @@ const sensitivity =
 const photoQuality =
     document.getElementById(
         "photoQuality"
+    );
+
+
+const qualityInfo =
+    document.getElementById(
+        "qualityInfo"
     );
 
 
@@ -2688,7 +2822,48 @@ const downloadLatest =
 
 
 /* =====================================================
-   COOLDOWN DISPLAY
+   PHOTO QUALITY DISPLAY
+===================================================== */
+
+function updateQualityInfo() {
+
+    const settings =
+        getPhotoQuality();
+
+
+    const qualityPercent =
+        Math.round(
+            settings.quality * 100
+        );
+
+
+    qualityInfo.innerHTML =
+
+        settings.width +
+        " × " +
+        settings.height +
+
+        " pixels<br>" +
+
+        "JPEG quality: " +
+        qualityPercent +
+        "%";
+
+}
+
+
+photoQuality.addEventListener(
+    "change",
+    updateQualityInfo
+);
+
+
+updateQualityInfo();
+
+
+
+/* =====================================================
+   COOLDOWN
 ===================================================== */
 
 cooldown.addEventListener(
@@ -2696,7 +2871,8 @@ cooldown.addEventListener(
     function() {
 
         cooldownValue.textContent =
-            cooldown.value;
+            cooldown.value +
+            " sec";
 
     }
 );
@@ -2717,7 +2893,7 @@ function setStatus(
 
 
     status.className =
-        "status-box";
+        "live-status";
 
 
     if (type) {
@@ -2735,7 +2911,6 @@ function setStatus(
 /* =====================================================
    PHOTO QUALITY
 ===================================================== */
-
 
 function getPhotoQuality() {
 
@@ -2793,10 +2968,6 @@ function getPhotoQuality() {
 
     }
 
-
-    /*
-    High
-    */
 
     return {
 
@@ -2867,6 +3038,7 @@ async function startCamera() {
         motionCanvas.width =
             320;
 
+
         motionCanvas.height =
             180;
 
@@ -2897,6 +3069,14 @@ async function startCamera() {
 
         cameraStatus.textContent =
             "ON";
+
+
+        cameraStatusBox.textContent =
+            "🟢 Camera Online";
+
+
+        cameraStatusBox.className =
+            "camera-status-box online";
 
 
         cameraBadge.textContent =
@@ -3006,6 +3186,14 @@ function stopCamera() {
         "OFF";
 
 
+    cameraStatusBox.textContent =
+        "⚪ Camera Offline";
+
+
+    cameraStatusBox.className =
+        "camera-status-box offline";
+
+
     cameraBadge.textContent =
         "CAMERA OFF";
 
@@ -3104,7 +3292,9 @@ function detectMotion() {
 
 
     /*
-    Working motion settings.
+    IMPORTANT:
+    This is the same working
+    block-based detection approach.
     */
 
     let threshold;
@@ -3143,12 +3333,9 @@ function detectMotion() {
     }
 
 
-    /*
-    Divide image into blocks.
-    */
-
     const blockWidth =
         20;
+
 
     const blockHeight =
         20;
@@ -3311,6 +3498,12 @@ function detectMotion() {
                 motionCounter;
 
 
+            document.getElementById(
+                "leftMotionCount"
+            ).textContent =
+                motionCounter;
+
+
             const now =
                 Date.now();
 
@@ -3385,12 +3578,14 @@ function detectMotion() {
 
 
 /* =====================================================
-   CAPTURE LOW-QUALITY PHOTO
+   CAPTURE PHOTO + WATERMARK
 ===================================================== */
 
 async function capturePhoto() {
 
-    if (!video.videoWidth) {
+    if (
+        !video.videoWidth
+    ) {
 
         return;
 
@@ -3398,16 +3593,12 @@ async function capturePhoto() {
 
 
     /*
-    Get selected quality.
+    Selected storage quality.
     */
 
     const settings =
         getPhotoQuality();
 
-
-    /*
-    Create small canvas.
-    */
 
     const canvas =
         document.createElement(
@@ -3430,7 +3621,7 @@ async function capturePhoto() {
 
 
     /*
-    Draw resized camera image.
+    Resize live camera frame.
     */
 
     context.drawImage(
@@ -3447,7 +3638,7 @@ async function capturePhoto() {
 
 
     /*
-    Timestamp.
+    Capture date/time.
     */
 
     const now =
@@ -3476,72 +3667,170 @@ async function capturePhoto() {
 
 
     /*
-    Small timestamp on image.
+    =====================================================
+    WATERMARK
+    =====================================================
+
+    Every photo will permanently contain:
+
+    MANAGE Library
+    20 August 2026 | 10:32:15 AM
+
+    The size is automatically scaled
+    according to the photograph resolution.
     */
 
-    const fontSize =
+
+    const scale =
+        settings.width / 480;
+
+
+    const padding =
         Math.max(
-            10,
+            7,
             Math.round(
-                settings.width / 45
+                9 * scale
             )
         );
 
 
-    const timestampWidth =
-        Math.min(
-            settings.width - 10,
-            240
+    const titleSize =
+        Math.max(
+            12,
+            Math.round(
+                17 * scale
+            )
         );
 
 
+    const dateSize =
+        Math.max(
+            9,
+            Math.round(
+                12 * scale
+            )
+        );
+
+
+    const lineHeight =
+        titleSize +
+        dateSize +
+        9;
+
+
+    /*
+    Watermark background.
+    */
+
+    const watermarkWidth =
+        Math.min(
+            settings.width - 10,
+            Math.max(
+                215 * scale,
+                240
+            )
+        );
+
+
+    const watermarkHeight =
+        lineHeight +
+        padding * 2;
+
+
+    const watermarkY =
+        settings.height -
+        watermarkHeight -
+        padding;
+
+
+    /*
+    Dark semi-transparent background.
+    */
+
     context.fillStyle =
-        "rgba(0,0,0,0.65)";
+        "rgba(0,0,0,0.68)";
 
 
     context.fillRect(
 
-        5,
+        padding,
 
-        settings.height -
-            fontSize -
-            12,
+        watermarkY,
 
-        timestampWidth,
+        watermarkWidth,
 
-        fontSize + 7
-
-    );
-
-
-    context.fillStyle =
-        "white";
-
-
-    context.font =
-        fontSize +
-        "px Arial";
-
-
-    context.fillText(
-
-        now.toLocaleString(),
-
-        9,
-
-        settings.height - 7
+        watermarkHeight
 
     );
 
 
     /*
-    Compress image.
+    Main title.
+    */
+
+    context.fillStyle =
+        "#ffffff";
+
+
+    context.font =
+        "bold " +
+        titleSize +
+        "px Arial";
+
+
+    context.fillText(
+
+        "MANAGE Library",
+
+        padding * 2,
+
+        watermarkY +
+        padding +
+        titleSize
+
+    );
+
+
+    /*
+    Date + time.
+    */
+
+    context.font =
+        dateSize +
+        "px Arial";
+
+
+    context.fillText(
+
+        now.toLocaleDateString(
+            undefined,
+            {
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            }
+        ) +
+        " | " +
+        time,
+
+        padding * 2,
+
+        watermarkY +
+        padding +
+        titleSize +
+        dateSize +
+        3
+
+    );
+
+
+    /*
+    Convert to compressed JPEG.
     */
 
     canvas.toBlob(
 
         async function(blob) {
-
 
             if (!blob) {
 
@@ -3554,7 +3843,7 @@ async function capturePhoto() {
 
 
                 /*
-                Save to IndexedDB.
+                Save photo.
                 */
 
                 await savePhotoToDatabase(
@@ -3574,14 +3863,14 @@ async function capturePhoto() {
 
 
                 /*
-                Refresh statistics.
+                Refresh history.
                 */
 
                 await renderHistory();
 
 
                 /*
-                Latest preview.
+                Latest photo.
                 */
 
                 const imageURL =
@@ -3603,7 +3892,7 @@ async function capturePhoto() {
 
 
                 /*
-                Download latest.
+                Latest download.
                 */
 
                 downloadLatest.href =
@@ -3612,7 +3901,7 @@ async function capturePhoto() {
 
                 downloadLatest.download =
 
-                    "library-motion-" +
+                    "MANAGE-Library-" +
 
                     date +
 
@@ -3632,7 +3921,7 @@ async function capturePhoto() {
 
                 setStatus(
 
-                    "📸 Photo saved locally. Monitoring for movement...",
+                    "📸 Photo saved with MANAGE Library watermark.",
 
                     "success"
 
@@ -3672,7 +3961,7 @@ async function capturePhoto() {
 
 
 /* =====================================================
-   INITIALIZE
+   INITIALIZATION
 ===================================================== */
 
 async function initialize() {
@@ -3707,7 +3996,7 @@ initialize();
 
 
 /* =====================================================
-   BUTTONS
+   BUTTON EVENTS
 ===================================================== */
 
 startButton.addEventListener(
