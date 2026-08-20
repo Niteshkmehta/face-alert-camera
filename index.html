@@ -841,129 +841,190 @@ function stopCamera() {
 
 function detectMotion() {
 
-
     if (!running) {
-
         return;
-
     }
 
-
     /*
-    Draw current frame
+    Draw the current camera frame
+    into our small analysis canvas.
     */
 
     motionContext.drawImage(
-
         video,
-
         0,
         0,
-
         motionCanvas.width,
         motionCanvas.height
-
     );
-
 
     const currentFrame =
-    motionContext.getImageData(
-
-        0,
-        0,
-
-        motionCanvas.width,
-        motionCanvas.height
-
-    );
+        motionContext.getImageData(
+            0,
+            0,
+            motionCanvas.width,
+            motionCanvas.height
+        );
 
 
     /*
-    First frame becomes our reference.
+    First frame becomes the reference.
     */
 
     if (!previousFrame) {
 
-        previousFrame =
-        currentFrame;
+        previousFrame = currentFrame;
 
         animationFrame =
-        requestAnimationFrame(
-            detectMotion
-        );
+            requestAnimationFrame(
+                detectMotion
+            );
 
         return;
+    }
+
+
+    const current =
+        currentFrame.data;
+
+    const previous =
+        previousFrame.data;
+
+
+    /*
+    Motion settings.
+    */
+
+    let threshold;
+    let requiredBlocks;
+
+
+    if (sensitivity.value === "high") {
+
+        threshold = 12;
+        requiredBlocks = 8;
+
+    }
+
+    else if (sensitivity.value === "medium") {
+
+        threshold = 18;
+        requiredBlocks = 12;
+
+    }
+
+    else {
+
+        threshold = 25;
+        requiredBlocks = 18;
 
     }
 
 
-    const settings =
-    getMotionSettings();
-
-
-    const current =
-    currentFrame.data;
-
-    const previous =
-    previousFrame.data;
-
-
-    let changedPixels =
-    0;
-
-
     /*
-    Check every 4th pixel.
+    Divide image into blocks.
 
-    This reduces CPU usage while
-    still detecting significant movement.
+    16 x 9 = 144 blocks.
     */
 
-    const totalPixels =
-    motionCanvas.width *
-    motionCanvas.height;
+    const blockWidth = 20;
+    const blockHeight = 20;
+
+    let changedBlocks = 0;
 
 
     for (
-        let i = 0;
-        i < current.length;
-        i += 16
+        let y = 0;
+        y < motionCanvas.height;
+        y += blockHeight
     ) {
 
-
-        /*
-        Convert RGB to approximate brightness.
-        */
-
-        const currentBrightness =
-        (
-            current[i] +
-            current[i + 1] +
-            current[i + 2]
-        ) / 3;
-
-
-        const previousBrightness =
-        (
-            previous[i] +
-            previous[i + 1] +
-            previous[i + 2]
-        ) / 3;
-
-
-        const difference =
-        Math.abs(
-            currentBrightness -
-            previousBrightness
-        );
-
-
-        if (
-            difference >=
-            settings.pixelDifference
+        for (
+            let x = 0;
+            x < motionCanvas.width;
+            x += blockWidth
         ) {
 
-            changedPixels++;
+            let currentBrightness = 0;
+            let previousBrightness = 0;
+
+            let pixels = 0;
+
+
+            /*
+            Calculate average brightness
+            of this block.
+            */
+
+            for (
+                let by = y;
+                by < y + blockHeight &&
+                by < motionCanvas.height;
+                by++
+            ) {
+
+                for (
+                    let bx = x;
+                    bx < x + blockWidth &&
+                    bx < motionCanvas.width;
+                    bx++
+                ) {
+
+                    const index =
+                        (by * motionCanvas.width + bx) * 4;
+
+
+                    currentBrightness +=
+                        (
+                            current[index] +
+                            current[index + 1] +
+                            current[index + 2]
+                        ) / 3;
+
+
+                    previousBrightness +=
+                        (
+                            previous[index] +
+                            previous[index + 1] +
+                            previous[index + 2]
+                        ) / 3;
+
+
+                    pixels++;
+
+                }
+
+            }
+
+
+            if (pixels === 0) {
+                continue;
+            }
+
+
+            currentBrightness /=
+                pixels;
+
+            previousBrightness /=
+                pixels;
+
+
+            const difference =
+                Math.abs(
+                    currentBrightness -
+                    previousBrightness
+                );
+
+
+            /*
+            This block has significant movement.
+            */
+
+            if (difference >= threshold) {
+
+                changedBlocks++;
+
+            }
 
         }
 
@@ -971,24 +1032,26 @@ function detectMotion() {
 
 
     /*
-    Calculate percentage of image changed.
-    */
-
-    const checkedPixels =
-    current.length / 16;
-
-
-    const changedRatio =
-    changedPixels /
-    checkedPixels;
-
-
-    /*
-    Update previous frame.
+    Save current frame as reference.
     */
 
     previousFrame =
-    currentFrame;
+        currentFrame;
+
+
+    /*
+    Debug information.
+    */
+
+    if (changedBlocks > 0) {
+
+        setStatus(
+            "Movement analysis: " +
+            changedBlocks +
+            " blocks changed"
+        );
+
+    }
 
 
     /*
@@ -996,104 +1059,78 @@ function detectMotion() {
     */
 
     if (
-        changedRatio >=
-        settings.changedRatio
+        changedBlocks >=
+        requiredBlocks
     ) {
-
 
         stableFrames++;
 
 
         /*
-        Require movement to appear
-        in several consecutive frames.
-
-        This prevents a single noisy frame
-        from triggering the camera.
+        Require movement for two
+        consecutive frames.
         */
 
         if (
-            stableFrames >= 3 &&
+            stableFrames >= 2 &&
             !motionStarted
         ) {
 
-
-            motionStarted =
-            true;
+            motionStarted = true;
 
 
             motionCounter++;
 
-
             motionCount.textContent =
-            motionCounter;
+                motionCounter;
 
-
-            setStatus(
-                "🟢 Movement detected! Capturing photograph...",
-                "motion"
-            );
-
-
-            /*
-            Capture photograph
-            */
 
             const now =
-            Date.now();
+                Date.now();
 
 
             const cooldownMilliseconds =
-            Number(
-                cooldown.value
-            ) * 1000;
+                Number(
+                    cooldown.value
+                ) * 1000;
 
 
             /*
-            Respect cooldown.
+            Check cooldown.
             */
 
             if (
-                now -
-                lastCaptureTime >=
+                now - lastCaptureTime >=
                 cooldownMilliseconds
             ) {
+
+                setStatus(
+                    "🟢 MOVEMENT DETECTED — Capturing photo!",
+                    "motion"
+                );
 
 
                 capturePhoto();
 
 
                 lastCaptureTime =
-                now;
+                    now;
 
             }
-
 
         }
 
     }
 
-
     else {
 
-
         /*
-        No significant movement.
-
-        Reset consecutive-frame counter.
+        Scene is stable.
         */
 
-        stableFrames =
-        0;
+        stableFrames = 0;
 
-
-        /*
-        Once the scene becomes stable again,
-        allow another movement event.
-        */
-
-        motionStarted =
-        false;
+        motionStarted = false;
 
 
         if (running) {
@@ -1108,13 +1145,15 @@ function detectMotion() {
     }
 
 
+    /*
+    Continue monitoring.
+    */
+
     animationFrame =
-    requestAnimationFrame(
-        detectMotion
-    );
-
+        requestAnimationFrame(
+            detectMotion
+        );
 }
-
 
 
 /* =====================================================
