@@ -2,203 +2,182 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <title>Face Alert Camera</title>
+<title>Face Alert Camera</title>
 
-    <style>
+<style>
 
-        * {
-            box-sizing: border-box;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            color: #222;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #222;
+}
 
-        header {
-            background: #1f2937;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
+header {
+    background: #1f2937;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
 
-        header h1 {
-            margin: 0;
-            font-size: 28px;
-        }
+header h1 {
+    margin: 0;
+    font-size: 28px;
+}
 
-        header p {
-            margin: 8px 0 0;
-            color: #d1d5db;
-        }
+header p {
+    margin: 8px 0 0;
+    color: #d1d5db;
+}
 
-        .container {
-            max-width: 1100px;
-            margin: 25px auto;
-            padding: 0 15px;
-        }
+.container {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
 
-        .camera-card,
-        .capture-area {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        }
+.camera-card,
+.capture-area {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
 
-        .camera-area {
-            position: relative;
-            width: 100%;
-            background: #111;
-            border-radius: 10px;
-            overflow: hidden;
-            min-height: 300px;
-        }
+.camera-area {
+    position: relative;
+    width: 100%;
+    background: #111;
+    border-radius: 10px;
+    overflow: hidden;
+}
 
-        video {
-            width: 100%;
-            display: block;
-            background: #111;
-        }
+video {
+    width: 100%;
+    display: block;
+    background: #111;
+}
 
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
 
-        .controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
 
-        button {
-            padding: 12px 22px;
-            border: none;
-            border-radius: 7px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+button {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 7px;
+    font-size: 16px;
+    cursor: pointer;
+}
 
-        #startButton {
-            background: #16a34a;
-            color: white;
-        }
+#startButton {
+    background: #16a34a;
+    color: white;
+}
 
-        #stopButton {
-            background: #dc2626;
-            color: white;
-        }
+#stopButton {
+    background: #dc2626;
+    color: white;
+}
 
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
-        .status {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 7px;
-            background: #f3f4f6;
-        }
+.status {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 7px;
+    background: #f3f4f6;
+}
 
-        .status.success {
-            background: #dcfce7;
-            color: #166534;
-        }
+.success {
+    background: #dcfce7;
+    color: #166534;
+}
 
-        .status.error {
-            background: #fee2e2;
-            color: #991b1b;
-        }
+.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
 
-        .stat {
-            background: white;
-            padding: 18px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
+.stat {
+    background: white;
+    padding: 18px;
+    border-radius: 10px;
+    text-align: center;
+}
 
-        .stat-title {
-            font-size: 15px;
-        }
+.stat-number {
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 5px;
+}
 
-        .stat-number {
-            font-size: 30px;
-            font-weight: bold;
-            margin-top: 5px;
-        }
+.capture-area {
+    margin-top: 25px;
+}
 
-        .capture-area {
-            margin-top: 25px;
-        }
+#latestPhoto {
+    max-width: 100%;
+    display: none;
+    border-radius: 8px;
+}
 
-        #latestPhoto {
-            max-width: 100%;
-            border-radius: 8px;
-            display: none;
-        }
+#downloadLink {
+    display: none;
+    margin-top: 10px;
+    text-decoration: none;
+    background: #2563eb;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+}
 
-        #downloadLink {
-            display: none;
-            margin-top: 10px;
-            text-decoration: none;
-            background: #2563eb;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 6px;
-        }
+.notice {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+}
 
-        .notice {
-            margin-top: 20px;
-            font-size: 13px;
-            color: #555;
-            line-height: 1.5;
-        }
+@media (max-width: 700px) {
 
-        .error-help {
-            display: none;
-            margin-top: 10px;
-            padding: 12px;
-            background: #fff7ed;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #9a3412;
-        }
+    .stats {
+        grid-template-columns: 1fr;
+    }
 
-        @media (max-width: 700px) {
+}
 
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            header h1 {
-                font-size: 22px;
-            }
-
-        }
-
-    </style>
+</style>
 
 </head>
 
@@ -208,11 +187,11 @@
 
 <header>
 
-    <h1>📷 Face Alert Camera</h1>
+<h1>📷 Face Alert Camera</h1>
 
-    <p>
-        Browser-based face detection and automatic photo capture
-    </p>
+<p>
+Browser-based face detection and automatic photo capture
+</p>
 
 </header>
 
@@ -220,176 +199,156 @@
 <div class="container">
 
 
-    <!-- CAMERA -->
+<div class="camera-card">
 
-    <div class="camera-card">
 
-        <div class="camera-area">
+<div class="camera-area">
 
-            <video
-                id="camera"
-                autoplay
-                playsinline
-                muted>
-            </video>
+<video
+id="camera"
+autoplay
+playsinline
+muted>
+</video>
 
-            <canvas
-                id="overlay">
-            </canvas>
+<canvas id="overlay"></canvas>
 
-        </div>
+</div>
 
 
-        <div class="controls">
+<div class="controls">
 
-            <button
-                id="startButton"
-                type="button">
+<button
+id="startButton">
 
-                ▶ Start Camera
+▶ Start Camera
 
-            </button>
+</button>
 
 
-            <button
-                id="stopButton"
-                type="button"
-                disabled>
+<button
+id="stopButton"
+disabled>
 
-                ■ Stop Camera
+■ Stop Camera
 
-            </button>
+</button>
 
-        </div>
+</div>
 
 
-        <div
-            id="status"
-            class="status">
+<div
+id="status"
+class="status">
 
-            Camera is stopped.
+Camera is stopped.
 
-        </div>
+</div>
 
 
-        <div
-            id="errorHelp"
-            class="error-help">
+</div>
 
-            If the camera does not start, make sure that Chrome has
-            permission to use your camera for this website.
 
-        </div>
 
-    </div>
+<div class="stats">
 
 
+<div class="stat">
 
-    <!-- STATISTICS -->
+<div>
+Faces Detected
+</div>
 
-    <div class="stats">
+<div
+id="faceCount"
+class="stat-number">
 
+0
 
-        <div class="stat">
+</div>
 
-            <div class="stat-title">
-                Faces Detected
-            </div>
+</div>
 
-            <div
-                id="faceCount"
-                class="stat-number">
 
-                0
+<div class="stat">
 
-            </div>
+<div>
+Photos Captured
+</div>
 
-        </div>
+<div
+id="photoCount"
+class="stat-number">
 
+0
 
-        <div class="stat">
+</div>
 
-            <div class="stat-title">
-                Photos Captured
-            </div>
+</div>
 
-            <div
-                id="photoCount"
-                class="stat-number">
 
-                0
+<div class="stat">
 
-            </div>
+<div>
+Camera Status
+</div>
 
-        </div>
+<div
+id="cameraStatus"
+class="stat-number">
 
+OFF
 
-        <div class="stat">
+</div>
 
-            <div class="stat-title">
-                Camera Status
-            </div>
+</div>
 
-            <div
-                id="cameraStatus"
-                class="stat-number">
 
-                OFF
+</div>
 
-            </div>
 
-        </div>
 
+<div class="capture-area">
 
-    </div>
+<h2>
+Latest Captured Photo
+</h2>
 
 
+<img
+id="latestPhoto"
+alt="Latest captured face">
 
-    <!-- LATEST PHOTO -->
 
-    <div class="capture-area">
+<br>
 
-        <h2>
-            Latest Captured Photo
-        </h2>
 
+<a
+id="downloadLink"
+download>
 
-        <img
-            id="latestPhoto"
-            alt="Latest captured face">
+⬇ Download Photo
 
+</a>
 
-        <br>
 
+<p id="noPhoto">
 
-        <a
-            id="downloadLink"
-            download>
+No photograph captured yet.
 
-            ⬇ Download Photo
+</p>
 
-        </a>
+</div>
 
 
-        <p id="noPhoto">
+<div class="notice">
 
-            No photograph captured yet.
+<strong>Privacy notice:</strong>
 
-        </p>
+Face detection and processing are performed in
+your browser in this prototype.
 
-    </div>
-
-
-
-    <div class="notice">
-
-        <strong>Privacy notice:</strong>
-
-        Face detection is performed in your browser.
-        Camera images are not automatically uploaded anywhere
-        in this version.
-
-    </div>
+</div>
 
 
 </div>
@@ -399,109 +358,84 @@
 <script type="module">
 
 
-/*
-========================================================
-GLOBAL VARIABLES
-========================================================
-*/
+/* =====================================================
+   VARIABLES
+===================================================== */
 
-
-let FaceDetectorClass = null;
-
-let FilesetResolverClass = null;
-
-let detector = null;
 
 let cameraStream = null;
 
 let running = false;
 
+let detector = null;
+
+let detectorReady = false;
+
 let animationFrame = null;
-
-let faceWasDetected = false;
-
-let photoAlreadyCaptured = false;
-
-let faceStartTime = null;
 
 let photoCounter = 0;
 
+let facePresent = false;
+
+let photoTakenForCurrentFace = false;
+
+let faceStartTime = 0;
+
 let lastVideoTime = -1;
 
-let detectorLoading = false;
 
 
-
-/*
-========================================================
-HTML ELEMENTS
-========================================================
-*/
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
 
 const video =
-    document.getElementById("camera");
-
+document.getElementById("camera");
 
 const canvas =
-    document.getElementById("overlay");
-
+document.getElementById("overlay");
 
 const ctx =
-    canvas.getContext("2d");
-
+canvas.getContext("2d");
 
 const startButton =
-    document.getElementById("startButton");
-
+document.getElementById("startButton");
 
 const stopButton =
-    document.getElementById("stopButton");
-
+document.getElementById("stopButton");
 
 const status =
-    document.getElementById("status");
-
-
-const errorHelp =
-    document.getElementById("errorHelp");
-
+document.getElementById("status");
 
 const faceCount =
-    document.getElementById("faceCount");
-
+document.getElementById("faceCount");
 
 const photoCount =
-    document.getElementById("photoCount");
-
+document.getElementById("photoCount");
 
 const cameraStatus =
-    document.getElementById("cameraStatus");
-
+document.getElementById("cameraStatus");
 
 const latestPhoto =
-    document.getElementById("latestPhoto");
-
+document.getElementById("latestPhoto");
 
 const downloadLink =
-    document.getElementById("downloadLink");
-
+document.getElementById("downloadLink");
 
 const noPhoto =
-    document.getElementById("noPhoto");
+document.getElementById("noPhoto");
 
 
 
-/*
-========================================================
-STATUS FUNCTION
-========================================================
-*/
+/* =====================================================
+   STATUS
+===================================================== */
 
 
-function showStatus(message, type = "") {
+function setStatus(text, type = "") {
 
-    status.textContent = message;
+    status.textContent = text;
 
     status.className = "status";
 
@@ -515,304 +449,175 @@ function showStatus(message, type = "") {
 
 
 
-/*
-========================================================
-LOAD MEDIAPIPE
-========================================================
-*/
-
-
-async function loadFaceDetector() {
-
-    if (detector) {
-
-        return;
-
-    }
-
-
-    if (detectorLoading) {
-
-        return;
-
-    }
-
-
-    detectorLoading = true;
-
-
-    showStatus(
-        "Loading face detection AI...",
-        ""
-    );
-
-
-    try {
-
-
-        /*
-        Load MediaPipe library
-        */
-
-        const visionModule =
-            await import(
-                "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/+esm"
-            );
-
-
-        FaceDetectorClass =
-            visionModule.FaceDetector;
-
-
-        FilesetResolverClass =
-            visionModule.FilesetResolver;
-
-
-        /*
-        Load WASM files
-        */
-
-        const vision =
-            await FilesetResolverClass.forVisionTasks(
-
-                "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm"
-
-            );
-
-
-        /*
-        Create detector
-        */
-
-        detector =
-            await FaceDetectorClass.createFromOptions(
-
-                vision,
-
-                {
-
-                    baseOptions: {
-
-                        modelAssetPath:
-                            "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite",
-
-                        delegate: "CPU"
-
-                    },
-
-
-                    runningMode: "VIDEO",
-
-
-                    minDetectionConfidence: 0.55,
-
-
-                    minSuppressionThreshold: 0.3
-
-                }
-
-            );
-
-
-        detectorLoading = false;
-
-
-        console.log(
-            "Face detector loaded successfully."
-        );
-
-
-    }
-
-    catch (error) {
-
-        detectorLoading = false;
-
-        console.error(
-            "Face detector error:",
-            error
-        );
-
-
-        throw new Error(
-            "Face detector could not load. " +
-            error.message
-        );
-
-    }
-
-}
-
-
-
-/*
-========================================================
-START CAMERA
-========================================================
-*/
+/* =====================================================
+   START CAMERA
+===================================================== */
 
 
 async function startCamera() {
 
-    if (running) {
-
-        return;
-
-    }
+    console.log("START BUTTON CLICKED");
 
 
     try {
 
 
-        errorHelp.style.display =
-            "none";
-
-
-        /*
-        ----------------------------------------------
-        STEP 1
-        REQUEST CAMERA
-        ----------------------------------------------
-        */
-
-
-        showStatus(
+        setStatus(
             "Requesting camera permission..."
         );
 
 
-        if (
-            !navigator.mediaDevices ||
-            !navigator.mediaDevices.getUserMedia
-        ) {
-
-            throw new Error(
-                "Your browser does not support camera access."
-            );
-
-        }
-
+        /*
+        IMPORTANT:
+        CAMERA IS OPENED FIRST.
+        */
 
         cameraStream =
-            await navigator.mediaDevices.getUserMedia(
+        await navigator.mediaDevices.getUserMedia({
 
-                {
+            video: {
 
-                    video: {
+                width: {
+                    ideal: 1280
+                },
 
-                        width: {
-                            ideal: 1280
-                        },
-
-                        height: {
-                            ideal: 720
-                        }
-
-                    },
-
-                    audio: false
-
+                height: {
+                    ideal: 720
                 }
 
-            );
+            },
+
+            audio: false
+
+        });
+
+
+        console.log(
+            "CAMERA STREAM RECEIVED"
+        );
 
 
         /*
-        ----------------------------------------------
-        STEP 2
-        SHOW CAMERA
-        ----------------------------------------------
+        Attach stream
         */
 
-
         video.srcObject =
-            cameraStream;
+        cameraStream;
 
+
+        /*
+        Wait for video
+        */
+
+        await new Promise(
+            resolve => {
+
+                if (
+                    video.readyState >= 2
+                ) {
+
+                    resolve();
+
+                }
+
+                else {
+
+                    video.onloadedmetadata =
+                    () => resolve();
+
+                }
+
+            }
+        );
+
+
+        /*
+        Play video
+        */
 
         await video.play();
 
+
+        console.log(
+            "VIDEO PLAYING"
+        );
+
+
+        /*
+        Camera is now officially running
+        */
 
         running = true;
 
 
         startButton.disabled =
-            true;
-
+        true;
 
         stopButton.disabled =
-            false;
+        false;
 
 
         cameraStatus.textContent =
-            "ON";
+        "ON";
 
 
-        showStatus(
-            "Camera is active. Loading face detector...",
+        setStatus(
+            "Camera is working. Starting face detector...",
             "success"
         );
-
-
-        /*
-        ----------------------------------------------
-        STEP 3
-        SET CANVAS
-        ----------------------------------------------
-        */
 
 
         resizeCanvas();
 
 
         /*
-        ----------------------------------------------
-        STEP 4
-        LOAD FACE DETECTOR
-        ----------------------------------------------
+        Start detection loop immediately.
         */
 
-
-        await loadFaceDetector();
+        detectionLoop();
 
 
         /*
-        ----------------------------------------------
-        STEP 5
-        START DETECTION
-        ----------------------------------------------
+        Load AI separately.
         */
 
-
-        showStatus(
-            "Camera active. Looking for faces...",
-            "success"
-        );
-
-
-        detectFaces();
+        loadDetectorInBackground();
 
 
     }
 
+
     catch (error) {
 
+
         console.error(
-            "START ERROR:",
+            "CAMERA ERROR:",
             error
         );
 
 
-        showStatus(
-            "ERROR: " + error.message,
+        setStatus(
+            "Camera ERROR: " +
+            error.message,
             "error"
         );
 
 
-        errorHelp.style.display =
-            "block";
+        /*
+        IMPORTANT:
+        We do NOT call stopCamera().
+        */
 
+        running = false;
 
-        stopCamera();
+        startButton.disabled =
+        false;
+
+        stopButton.disabled =
+        true;
+
+        cameraStatus.textContent =
+        "ERROR";
 
     }
 
@@ -820,14 +625,18 @@ async function startCamera() {
 
 
 
-/*
-========================================================
-STOP CAMERA
-========================================================
-*/
+/* =====================================================
+   STOP CAMERA
+===================================================== */
 
 
 function stopCamera() {
+
+
+    console.log(
+        "STOP CAMERA"
+    );
+
 
     running = false;
 
@@ -846,10 +655,14 @@ function stopCamera() {
     if (cameraStream) {
 
         cameraStream
-            .getTracks()
-            .forEach(
-                track => track.stop()
-            );
+        .getTracks()
+        .forEach(
+            track => {
+
+                track.stop();
+
+            }
+        );
 
     }
 
@@ -861,35 +674,18 @@ function stopCamera() {
 
 
     startButton.disabled =
-        false;
-
+    false;
 
     stopButton.disabled =
-        true;
+    true;
 
 
     cameraStatus.textContent =
-        "OFF";
+    "OFF";
 
 
     faceCount.textContent =
-        "0";
-
-
-    faceWasDetected =
-        false;
-
-
-    photoAlreadyCaptured =
-        false;
-
-
-    faceStartTime =
-        null;
-
-
-    lastVideoTime =
-        -1;
+    "0";
 
 
     ctx.clearRect(
@@ -900,7 +696,7 @@ function stopCamera() {
     );
 
 
-    showStatus(
+    setStatus(
         "Camera stopped."
     );
 
@@ -908,11 +704,160 @@ function stopCamera() {
 
 
 
-/*
-========================================================
-RESIZE CANVAS
-========================================================
-*/
+/* =====================================================
+   LOAD FACE DETECTOR
+===================================================== */
+
+
+async function loadDetectorInBackground() {
+
+
+    try {
+
+
+        setStatus(
+            "Camera working. Loading face detection AI...",
+            "success"
+        );
+
+
+        console.log(
+            "Loading MediaPipe..."
+        );
+
+
+        /*
+        Import MediaPipe
+        */
+
+        const module =
+        await import(
+            "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/+esm"
+        );
+
+
+        console.log(
+            "MediaPipe library loaded"
+        );
+
+
+        const FilesetResolver =
+        module.FilesetResolver;
+
+        const FaceDetector =
+        module.FaceDetector;
+
+
+        /*
+        Load WASM
+        */
+
+        const vision =
+        await FilesetResolver.forVisionTasks(
+
+            "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm"
+
+        );
+
+
+        console.log(
+            "WASM loaded"
+        );
+
+
+        /*
+        Create detector
+        */
+
+        detector =
+        await FaceDetector.createFromOptions(
+
+            vision,
+
+            {
+
+                baseOptions: {
+
+                    modelAssetPath:
+                    "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite",
+
+                    delegate: "CPU"
+
+                },
+
+                runningMode: "VIDEO",
+
+                minDetectionConfidence: 0.5,
+
+                minSuppressionThreshold: 0.3
+
+            }
+
+        );
+
+
+        detectorReady =
+        true;
+
+
+        console.log(
+            "FACE DETECTOR READY"
+        );
+
+
+        if (running) {
+
+            setStatus(
+                "Camera active. Face detection is ready.",
+                "success"
+            );
+
+        }
+
+
+    }
+
+
+    catch (error) {
+
+
+        console.error(
+            "FACE DETECTOR ERROR:",
+            error
+        );
+
+
+        detectorReady =
+        false;
+
+
+        /*
+        IMPORTANT:
+        CAMERA CONTINUES RUNNING.
+        */
+
+        if (running) {
+
+            setStatus(
+
+                "Camera is working, but face detection failed: " +
+                error.message,
+
+                "error"
+
+            );
+
+        }
+
+    }
+
+}
+
+
+
+/* =====================================================
+   RESIZE CANVAS
+===================================================== */
 
 
 function resizeCanvas() {
@@ -925,24 +870,22 @@ function resizeCanvas() {
 
 
     canvas.width =
-        video.videoWidth;
-
+    video.videoWidth;
 
     canvas.height =
-        video.videoHeight;
+    video.videoHeight;
 
 }
 
 
 
-/*
-========================================================
-FACE DETECTION
-========================================================
-*/
+/* =====================================================
+   DETECTION LOOP
+===================================================== */
 
 
-function detectFaces() {
+function detectionLoop() {
+
 
     if (!running) {
 
@@ -954,6 +897,10 @@ function detectFaces() {
     resizeCanvas();
 
 
+    /*
+    Clear overlay
+    */
+
     ctx.clearRect(
         0,
         0,
@@ -963,19 +910,15 @@ function detectFaces() {
 
 
     /*
-    Make sure video is ready
+    If detector is ready
     */
 
     if (
-        video.readyState >= 2 &&
-        detector
+        detectorReady &&
+        detector &&
+        video.readyState >= 2
     ) {
 
-
-        /*
-        Avoid processing the
-        exact same video frame
-        */
 
         if (
             video.currentTime !==
@@ -984,53 +927,47 @@ function detectFaces() {
 
 
             lastVideoTime =
-                video.currentTime;
+            video.currentTime;
 
 
             try {
 
 
                 const result =
-                    detector.detectForVideo(
+                detector.detectForVideo(
 
-                        video,
+                    video,
 
-                        performance.now()
+                    performance.now()
 
-                    );
+                );
 
 
                 const detections =
-                    result.detections || [];
+                result.detections || [];
 
 
                 faceCount.textContent =
-                    detections.length;
-
+                detections.length;
 
 
                 /*
-                --------------------------------------
-                DRAW FACE BOXES
-                --------------------------------------
+                Draw boxes
                 */
 
-
                 detections.forEach(
-
                     detection => {
 
-
                         const box =
-                            detection.boundingBox;
+                        detection.boundingBox;
 
 
                         ctx.strokeStyle =
-                            "#00ff00";
+                        "#00ff00";
 
 
                         ctx.lineWidth =
-                            4;
+                        4;
 
 
                         ctx.strokeRect(
@@ -1045,105 +982,64 @@ function detectFaces() {
 
                         );
 
-
                     }
-
                 );
 
 
-
                 /*
-                --------------------------------------
-                FACE FOUND
-                --------------------------------------
+                Face found
                 */
-
 
                 if (
                     detections.length > 0
                 ) {
 
 
-                    /*
-                    New face event
-                    */
+                    if (!facePresent) {
 
-                    if (
-                        !faceWasDetected
-                    ) {
+                        facePresent =
+                        true;
 
-                        faceWasDetected =
-                            true;
-
-                        photoAlreadyCaptured =
-                            false;
+                        photoTakenForCurrentFace =
+                        false;
 
                         faceStartTime =
-                            Date.now();
+                        Date.now();
 
                     }
 
 
                     /*
-                    Face is visible
+                    Capture after 1 second
                     */
 
                     if (
-                        !photoAlreadyCaptured
+                        !photoTakenForCurrentFace &&
+                        Date.now() - faceStartTime >= 1000
                     ) {
 
 
-                        const elapsed =
-                            Date.now() -
-                            faceStartTime;
+                        capturePhoto();
 
 
-                        showStatus(
+                        photoTakenForCurrentFace =
+                        true;
 
-                            "Face detected. " +
-                            "Preparing photograph...",
 
+                        setStatus(
+                            "📸 Face captured. Waiting for face to leave.",
                             "success"
-
                         );
-
-
-                        /*
-                        Wait one second
-                        */
-
-                        if (
-                            elapsed >= 1000
-                        ) {
-
-                            capturePhoto();
-
-                            photoAlreadyCaptured =
-                                true;
-
-
-                            showStatus(
-
-                                "Photo captured. " +
-                                "Waiting for face to leave.",
-
-                                "success"
-
-                            );
-
-                        }
 
                     }
 
-                    else {
+                    else if (
+                        !photoTakenForCurrentFace
+                    ) {
 
-                        showStatus(
-
-                            "Face detected. " +
-                            "Photo already captured.",
-
+                        setStatus(
+                            "Face detected. Preparing photo...",
                             "success"
-
                         );
 
                     }
@@ -1152,44 +1048,42 @@ function detectFaces() {
 
 
                 /*
-                --------------------------------------
-                NO FACE
-                --------------------------------------
+                No face
                 */
-
 
                 else {
 
 
-                    faceWasDetected =
-                        false;
+                    facePresent =
+                    false;
 
-
-                    photoAlreadyCaptured =
-                        false;
-
+                    photoTakenForCurrentFace =
+                    false;
 
                     faceStartTime =
-                        null;
+                    0;
 
 
-                    showStatus(
-                        "Watching for a face..."
+                    setStatus(
+                        "Watching for a face...",
+                        "success"
                     );
 
                 }
 
             }
 
+
             catch (error) {
 
+
                 console.error(
-                    "Detection error:",
+                    "DETECTION ERROR:",
                     error
                 );
 
 
-                showStatus(
+                setStatus(
                     "Detection error: " +
                     error.message,
                     "error"
@@ -1203,54 +1097,55 @@ function detectFaces() {
 
 
     /*
-    Continue loop
+    Continue camera loop
     */
 
     animationFrame =
-        requestAnimationFrame(
-            detectFaces
-        );
+    requestAnimationFrame(
+        detectionLoop
+    );
 
 }
 
 
 
-/*
-========================================================
-CAPTURE PHOTO
-========================================================
-*/
+/* =====================================================
+   CAPTURE PHOTO
+===================================================== */
 
 
 function capturePhoto() {
 
 
-    /*
-    Create image canvas
-    */
+    if (!video.videoWidth) {
+
+        return;
+
+    }
+
 
     const photoCanvas =
-        document.createElement(
-            "canvas"
-        );
+    document.createElement(
+        "canvas"
+    );
 
 
     photoCanvas.width =
-        video.videoWidth;
+    video.videoWidth;
 
 
     photoCanvas.height =
-        video.videoHeight;
+    video.videoHeight;
 
 
     const photoContext =
-        photoCanvas.getContext(
-            "2d"
-        );
+    photoCanvas.getContext(
+        "2d"
+    );
 
 
     /*
-    Draw current camera frame
+    Copy camera image
     */
 
     photoContext.drawImage(
@@ -1267,48 +1162,40 @@ function capturePhoto() {
 
 
     /*
-    Timestamp
+    Add timestamp
     */
 
     const now =
-        new Date();
+    new Date();
 
 
     const timestamp =
-        now.toLocaleString();
+    now.toLocaleString();
 
-
-    /*
-    Timestamp background
-    */
 
     photoContext.fillStyle =
-        "rgba(0,0,0,0.70)";
+    "rgba(0,0,0,0.7)";
 
 
     photoContext.fillRect(
 
         10,
 
-        photoCanvas.height - 50,
+        photoCanvas.height - 48,
 
         300,
 
-        36
+        35
 
     );
 
 
-    /*
-    Timestamp text
-    */
-
     photoContext.fillStyle =
-        "#ffffff";
+    "white";
 
 
     photoContext.font =
-        "17px Arial";
+    "17px Arial";
 
 
     photoContext.fillText(
@@ -1317,83 +1204,80 @@ function capturePhoto() {
 
         20,
 
-        photoCanvas.height - 25
+        photoCanvas.height - 24
 
     );
 
 
     /*
-    Convert to JPEG
+    Convert image
     */
 
     const imageURL =
-        photoCanvas.toDataURL(
+    photoCanvas.toDataURL(
 
-            "image/jpeg",
+        "image/jpeg",
 
-            0.90
+        0.9
 
-        );
+    );
 
 
     /*
-    Increase counter
+    Counter
     */
 
     photoCounter++;
 
-
     photoCount.textContent =
-        photoCounter;
+    photoCounter;
 
 
     /*
-    Show latest photograph
+    Display
     */
 
     latestPhoto.src =
-        imageURL;
+    imageURL;
 
 
     latestPhoto.style.display =
-        "block";
+    "block";
 
 
     noPhoto.style.display =
-        "none";
+    "none";
 
 
     /*
-    Create download link
+    Download
     */
 
     const filename =
-        "face-" +
-
-        now
-            .toISOString()
-            .replace(
-                /[:.]/g,
-                "-"
-            ) +
-
-        ".jpg";
+    "face-" +
+    now
+    .toISOString()
+    .replace(
+        /[:.]/g,
+        "-"
+    ) +
+    ".jpg";
 
 
     downloadLink.href =
-        imageURL;
+    imageURL;
 
 
     downloadLink.download =
-        filename;
+    filename;
 
 
     downloadLink.style.display =
-        "inline-block";
+    "inline-block";
 
 
     console.log(
-        "Photo captured:",
+        "PHOTO CAPTURED:",
         filename
     );
 
@@ -1401,60 +1285,38 @@ function capturePhoto() {
 
 
 
-/*
-========================================================
-BUTTON EVENTS
-========================================================
-*/
+/* =====================================================
+   BUTTONS
+===================================================== */
 
 
 startButton.addEventListener(
-
     "click",
-
     startCamera
-
 );
 
 
 stopButton.addEventListener(
-
     "click",
-
     stopCamera
-
 );
 
 
 
-/*
-========================================================
-WINDOW CLEANUP
-========================================================
-*/
+/* =====================================================
+   CLEANUP
+===================================================== */
 
 
 window.addEventListener(
-
     "beforeunload",
-
     stopCamera
-
 );
-
-
-
-/*
-========================================================
-INITIAL MESSAGE
-========================================================
-*/
 
 
 console.log(
-    "Face Alert Camera loaded."
+    "FACE ALERT CAMERA LOADED"
 );
-
 
 </script>
 
