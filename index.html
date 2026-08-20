@@ -1,336 +1,1294 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Camera Test</title>
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Motion Alert Camera</title>
 
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #f3f4f6;
-        text-align: center;
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f4f6;
+    color: #1f2937;
+}
+
+header {
+    background: #1f2937;
+    color: white;
+    padding: 22px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+header p {
+    margin: 8px 0 0;
+    color: #d1d5db;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.camera-area {
+    position: relative;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+video {
+    width: 100%;
+    display: block;
+    background: #000;
+}
+
+#motionCanvas {
+    display: none;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+}
+
+button {
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#startButton {
+    background: #16a34a;
+    color: white;
+}
+
+#stopButton {
+    background: #dc2626;
+    color: white;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.status {
+    margin-top: 15px;
+    padding: 13px;
+    border-radius: 8px;
+    background: #f3f4f6;
+}
+
+.status.success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status.motion {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.settings {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.setting {
+    padding: 15px;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.setting label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.setting input {
+    width: 100%;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat {
+    background: white;
+    padding: 18px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.stat-title {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.stat-number {
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.capture {
+    margin-top: 25px;
+}
+
+#latestPhoto {
+    display: none;
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+#downloadLink {
+    display: none;
+    margin-top: 10px;
+    background: #2563eb;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.help {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+
+    .stats,
+    .settings {
+        grid-template-columns: 1fr;
     }
 
-    header {
-        background: #1f2937;
-        color: white;
-        padding: 20px;
-    }
+}
 
-    .container {
-        max-width: 900px;
-        margin: 30px auto;
-        padding: 20px;
-    }
-
-    .camera {
-        background: black;
-        border-radius: 12px;
-        overflow: hidden;
-    }
-
-    video {
-        width: 100%;
-        display: block;
-    }
-
-    button {
-        padding: 14px 25px;
-        margin: 15px 5px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-    #start {
-        background: #16a34a;
-        color: white;
-    }
-
-    #stop {
-        background: #dc2626;
-        color: white;
-    }
-
-    button:disabled {
-        opacity: 0.5;
-    }
-
-    #status {
-        padding: 15px;
-        background: white;
-        border-radius: 8px;
-        margin-top: 15px;
-    }
-
-    #debug {
-        margin-top: 15px;
-        padding: 15px;
-        background: #111827;
-        color: #d1fae5;
-        text-align: left;
-        font-family: monospace;
-        white-space: pre-wrap;
-        border-radius: 8px;
-    }
 </style>
+
 </head>
+
 
 <body>
 
+
 <header>
-    <h1>📷 Camera Stability Test</h1>
-    <p>No face detection — camera only</p>
+
+<h1>📷 Motion Alert Camera</h1>
+
+<p>
+Automatic photograph when significant movement is detected
+</p>
+
 </header>
+
 
 <div class="container">
 
-    <div class="camera">
-        <video id="video" autoplay playsinline muted></video>
-    </div>
 
-    <button id="start">
-        ▶ Start Camera
-    </button>
+<!-- CAMERA -->
 
-    <button id="stop" disabled>
-        ■ Stop Camera
-    </button>
+<div class="card">
 
-    <div id="status">
-        Camera is stopped.
-    </div>
+<div class="camera-area">
 
-    <div id="debug">
-        Waiting...
-    </div>
+<video
+id="camera"
+autoplay
+playsinline
+muted>
+</video>
 
 </div>
 
 
+<div class="controls">
+
+<button
+id="startButton">
+
+▶ Start Camera
+
+</button>
+
+
+<button
+id="stopButton"
+disabled>
+
+■ Stop Camera
+
+</button>
+
+</div>
+
+
+<div
+id="status"
+class="status">
+
+Camera is stopped.
+
+</div>
+
+
+<!-- SETTINGS -->
+
+<div class="settings">
+
+<div class="setting">
+
+<label for="sensitivity">
+
+Motion Sensitivity
+
+</label>
+
+<select
+id="sensitivity"
+style="width:100%;padding:10px">
+
+<option value="low">
+Low
+</option>
+
+<option value="medium"
+selected>
+Medium
+</option>
+
+<option value="high">
+High
+</option>
+
+</select>
+
+</div>
+
+
+<div class="setting">
+
+<label for="cooldown">
+
+Cooldown after photograph:
+<span id="cooldownValue">5</span> seconds
+
+</label>
+
+<input
+id="cooldown"
+type="range"
+min="2"
+max="60"
+value="5">
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<!-- STATISTICS -->
+
+<div class="stats">
+
+
+<div class="stat">
+
+<div class="stat-title">
+Motion Events
+</div>
+
+<div
+id="motionCount"
+class="stat-number">
+
+0
+
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-title">
+Photos Captured
+</div>
+
+<div
+id="photoCount"
+class="stat-number">
+
+0
+
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-title">
+Camera
+</div>
+
+<div
+id="cameraStatus"
+class="stat-number">
+
+OFF
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<!-- LATEST PHOTO -->
+
+<div class="card capture">
+
+<h2>
+Latest Captured Photo
+</h2>
+
+
+<img
+id="latestPhoto"
+alt="Latest motion capture">
+
+
+<br>
+
+
+<a
+id="downloadLink"
+download>
+
+⬇ Download Photo
+
+</a>
+
+
+<p id="noPhoto">
+
+No photograph captured yet.
+
+</p>
+
+</div>
+
+
+<div class="help">
+
+<strong>How it works:</strong>
+
+The camera compares consecutive frames.
+When enough of the image changes,
+the system considers it movement and
+automatically captures a photograph.
+
+The camera does not upload the video
+anywhere in this version.
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
 <script>
 
-const video =
-    document.getElementById("video");
 
-const startButton =
-    document.getElementById("start");
+/* =====================================================
+   VARIABLES
+===================================================== */
 
-const stopButton =
-    document.getElementById("stop");
-
-const status =
-    document.getElementById("status");
-
-const debug =
-    document.getElementById("debug");
 
 let stream = null;
 
+let running = false;
 
-/* ----------------------------------
-   DEBUG MESSAGE
----------------------------------- */
+let animationFrame = null;
 
-function log(message) {
+let previousFrame = null;
 
-    const time =
-        new Date().toLocaleTimeString();
+let motionCounter = 0;
 
-    debug.textContent =
-        time + " - " + message +
-        "\n" + debug.textContent;
+let photoCounter = 0;
+
+let lastCaptureTime = 0;
+
+let motionStarted = false;
+
+let stableFrames = 0;
+
+
+/*
+Small hidden canvas used for motion analysis.
+We intentionally use a small image because
+comparing every pixel of a 1080p camera frame
+would be unnecessarily expensive.
+*/
+
+const motionCanvas =
+document.createElement("canvas");
+
+const motionContext =
+motionCanvas.getContext("2d", {
+    willReadFrequently: true
+});
+
+
+/* =====================================================
+   HTML ELEMENTS
+===================================================== */
+
+
+const video =
+document.getElementById("camera");
+
+const startButton =
+document.getElementById("startButton");
+
+const stopButton =
+document.getElementById("stopButton");
+
+const status =
+document.getElementById("status");
+
+const cameraStatus =
+document.getElementById("cameraStatus");
+
+const motionCount =
+document.getElementById("motionCount");
+
+const photoCount =
+document.getElementById("photoCount");
+
+const latestPhoto =
+document.getElementById("latestPhoto");
+
+const downloadLink =
+document.getElementById("downloadLink");
+
+const noPhoto =
+document.getElementById("noPhoto");
+
+const sensitivity =
+document.getElementById("sensitivity");
+
+const cooldown =
+document.getElementById("cooldown");
+
+const cooldownValue =
+document.getElementById("cooldownValue");
+
+
+
+/* =====================================================
+   SETTINGS
+===================================================== */
+
+
+cooldown.addEventListener(
+"input",
+function() {
+
+    cooldownValue.textContent =
+    cooldown.value;
+
+});
+
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+
+function setStatus(
+    message,
+    type = ""
+) {
+
+    status.textContent =
+    message;
+
+    status.className =
+    "status";
+
+    if (type) {
+
+        status.classList.add(type);
+
+    }
 
 }
 
 
-/* ----------------------------------
+
+/* =====================================================
+   MOTION SETTINGS
+===================================================== */
+
+
+function getMotionSettings() {
+
+    const value =
+    sensitivity.value;
+
+
+    /*
+    pixelDifference:
+    How different a pixel needs to be.
+
+    changedRatio:
+    What percentage of pixels must change.
+    */
+
+    if (value === "low") {
+
+        return {
+
+            pixelDifference: 45,
+
+            changedRatio: 0.025
+
+        };
+
+    }
+
+
+    if (value === "high") {
+
+        return {
+
+            pixelDifference: 20,
+
+            changedRatio: 0.012
+
+        };
+
+    }
+
+
+    /*
+    Medium
+    */
+
+    return {
+
+        pixelDifference: 30,
+
+        changedRatio: 0.018
+
+    };
+
+}
+
+
+
+/* =====================================================
    START CAMERA
----------------------------------- */
+===================================================== */
+
 
 async function startCamera() {
 
+
+    if (running) {
+
+        return;
+
+    }
+
+
     try {
 
-        log("Requesting camera...");
+
+        setStatus(
+            "Requesting camera permission..."
+        );
+
 
         stream =
-            await navigator.mediaDevices.getUserMedia({
+        await navigator.mediaDevices.getUserMedia({
 
-                video: true,
+            video: {
 
-                audio: false
+                width: {
+                    ideal: 1280
+                },
 
-            });
+                height: {
+                    ideal: 720
+                }
 
+            },
 
-        log("Camera stream received.");
+            audio: false
+
+        });
 
 
         video.srcObject =
-            stream;
+        stream;
 
 
         await video.play();
 
 
-        log("Video is playing.");
+        /*
+        Motion analysis resolution.
+
+        320 x 180 is enough for detecting
+        significant movement and keeps CPU usage low.
+        */
+
+        motionCanvas.width =
+        320;
+
+        motionCanvas.height =
+        180;
+
+
+        previousFrame =
+        null;
+
+
+        motionStarted =
+        false;
+
+
+        stableFrames =
+        0;
+
+
+        running =
+        true;
 
 
         startButton.disabled =
-            true;
+        true;
 
         stopButton.disabled =
-            false;
+        false;
 
 
-        status.textContent =
-            "🟢 CAMERA RUNNING";
+        cameraStatus.textContent =
+        "ON";
 
 
-        /*
-        Monitor the actual camera track.
-        */
-
-        const track =
-            stream.getVideoTracks()[0];
-
-
-        log(
-            "Camera: " +
-            track.label
+        setStatus(
+            "Camera active. Monitoring for movement...",
+            "success"
         );
 
 
-        log(
-            "Track state: " +
-            track.readyState
-        );
-
-
-        track.onended = function() {
-
-            log(
-                "⚠️ CAMERA TRACK ENDED"
-            );
-
-            status.textContent =
-                "🔴 CAMERA STOPPED";
-
-        };
-
-
-        track.onmute = function() {
-
-            log(
-                "⚠️ CAMERA MUTED"
-            );
-
-        };
-
-
-        track.onunmute = function() {
-
-            log(
-                "🟢 CAMERA UNMUTED"
-            );
-
-        };
-
-
-        /*
-        Check camera every second.
-        */
-
-        setInterval(function() {
-
-            if (!stream) {
-                return;
-            }
-
-            const currentTrack =
-                stream.getVideoTracks()[0];
-
-            if (currentTrack) {
-
-                log(
-                    "Track: " +
-                    currentTrack.readyState +
-                    " | enabled: " +
-                    currentTrack.enabled
-                );
-
-            }
-
-        }, 5000);
+        detectMotion();
 
 
     }
 
-    catch(error) {
 
-        console.error(error);
+    catch (error) {
 
-        log(
-            "ERROR: " +
-            error.message
+
+        console.error(
+            error
         );
 
-        status.textContent =
-            "❌ ERROR: " +
-            error.message;
+
+        setStatus(
+            "Camera error: " +
+            error.message,
+            "error"
+        );
+
 
     }
 
 }
 
 
-/* ----------------------------------
+
+/* =====================================================
    STOP CAMERA
----------------------------------- */
+===================================================== */
+
 
 function stopCamera() {
 
-    if (stream) {
 
-        stream
-            .getTracks()
-            .forEach(
-                track => track.stop()
-            );
+    running =
+    false;
+
+
+    if (animationFrame) {
+
+        cancelAnimationFrame(
+            animationFrame
+        );
+
+        animationFrame =
+        null;
 
     }
 
 
-    stream = null;
+    if (stream) {
 
-    video.srcObject = null;
+        stream
+        .getTracks()
+        .forEach(
+            track => track.stop()
+        );
+
+    }
+
+
+    stream =
+    null;
+
+
+    video.srcObject =
+    null;
+
+
+    previousFrame =
+    null;
 
 
     startButton.disabled =
-        false;
+    false;
 
     stopButton.disabled =
-        true;
+    true;
 
 
-    status.textContent =
-        "Camera stopped.";
+    cameraStatus.textContent =
+    "OFF";
 
 
-    log(
-        "Camera manually stopped."
+    setStatus(
+        "Camera stopped."
     );
 
 }
 
 
-/* ----------------------------------
+
+/* =====================================================
+   MOTION DETECTION
+===================================================== */
+
+
+function detectMotion() {
+
+
+    if (!running) {
+
+        return;
+
+    }
+
+
+    /*
+    Draw current frame
+    */
+
+    motionContext.drawImage(
+
+        video,
+
+        0,
+        0,
+
+        motionCanvas.width,
+        motionCanvas.height
+
+    );
+
+
+    const currentFrame =
+    motionContext.getImageData(
+
+        0,
+        0,
+
+        motionCanvas.width,
+        motionCanvas.height
+
+    );
+
+
+    /*
+    First frame becomes our reference.
+    */
+
+    if (!previousFrame) {
+
+        previousFrame =
+        currentFrame;
+
+        animationFrame =
+        requestAnimationFrame(
+            detectMotion
+        );
+
+        return;
+
+    }
+
+
+    const settings =
+    getMotionSettings();
+
+
+    const current =
+    currentFrame.data;
+
+    const previous =
+    previousFrame.data;
+
+
+    let changedPixels =
+    0;
+
+
+    /*
+    Check every 4th pixel.
+
+    This reduces CPU usage while
+    still detecting significant movement.
+    */
+
+    const totalPixels =
+    motionCanvas.width *
+    motionCanvas.height;
+
+
+    for (
+        let i = 0;
+        i < current.length;
+        i += 16
+    ) {
+
+
+        /*
+        Convert RGB to approximate brightness.
+        */
+
+        const currentBrightness =
+        (
+            current[i] +
+            current[i + 1] +
+            current[i + 2]
+        ) / 3;
+
+
+        const previousBrightness =
+        (
+            previous[i] +
+            previous[i + 1] +
+            previous[i + 2]
+        ) / 3;
+
+
+        const difference =
+        Math.abs(
+            currentBrightness -
+            previousBrightness
+        );
+
+
+        if (
+            difference >=
+            settings.pixelDifference
+        ) {
+
+            changedPixels++;
+
+        }
+
+    }
+
+
+    /*
+    Calculate percentage of image changed.
+    */
+
+    const checkedPixels =
+    current.length / 16;
+
+
+    const changedRatio =
+    changedPixels /
+    checkedPixels;
+
+
+    /*
+    Update previous frame.
+    */
+
+    previousFrame =
+    currentFrame;
+
+
+    /*
+    Significant movement?
+    */
+
+    if (
+        changedRatio >=
+        settings.changedRatio
+    ) {
+
+
+        stableFrames++;
+
+
+        /*
+        Require movement to appear
+        in several consecutive frames.
+
+        This prevents a single noisy frame
+        from triggering the camera.
+        */
+
+        if (
+            stableFrames >= 3 &&
+            !motionStarted
+        ) {
+
+
+            motionStarted =
+            true;
+
+
+            motionCounter++;
+
+
+            motionCount.textContent =
+            motionCounter;
+
+
+            setStatus(
+                "🟢 Movement detected! Capturing photograph...",
+                "motion"
+            );
+
+
+            /*
+            Capture photograph
+            */
+
+            const now =
+            Date.now();
+
+
+            const cooldownMilliseconds =
+            Number(
+                cooldown.value
+            ) * 1000;
+
+
+            /*
+            Respect cooldown.
+            */
+
+            if (
+                now -
+                lastCaptureTime >=
+                cooldownMilliseconds
+            ) {
+
+
+                capturePhoto();
+
+
+                lastCaptureTime =
+                now;
+
+            }
+
+
+        }
+
+    }
+
+
+    else {
+
+
+        /*
+        No significant movement.
+
+        Reset consecutive-frame counter.
+        */
+
+        stableFrames =
+        0;
+
+
+        /*
+        Once the scene becomes stable again,
+        allow another movement event.
+        */
+
+        motionStarted =
+        false;
+
+
+        if (running) {
+
+            setStatus(
+                "Monitoring for movement...",
+                "success"
+            );
+
+        }
+
+    }
+
+
+    animationFrame =
+    requestAnimationFrame(
+        detectMotion
+    );
+
+}
+
+
+
+/* =====================================================
+   CAPTURE PHOTOGRAPH
+===================================================== */
+
+
+function capturePhoto() {
+
+
+    const canvas =
+    document.createElement(
+        "canvas"
+    );
+
+
+    canvas.width =
+    video.videoWidth;
+
+
+    canvas.height =
+    video.videoHeight;
+
+
+    const context =
+    canvas.getContext(
+        "2d"
+    );
+
+
+    /*
+    Capture actual full-resolution
+    camera image.
+    */
+
+    context.drawImage(
+
+        video,
+
+        0,
+        0,
+
+        canvas.width,
+        canvas.height
+
+    );
+
+
+    /*
+    Add timestamp.
+    */
+
+    const now =
+    new Date();
+
+
+    const timestamp =
+    now.toLocaleString();
+
+
+    context.fillStyle =
+    "rgba(0,0,0,0.70)";
+
+
+    context.fillRect(
+
+        10,
+
+        canvas.height - 50,
+
+        310,
+
+        36
+
+    );
+
+
+    context.fillStyle =
+    "white";
+
+
+    context.font =
+    "17px Arial";
+
+
+    context.fillText(
+
+        timestamp,
+
+        20,
+
+        canvas.height - 25
+
+    );
+
+
+    /*
+    Convert to JPEG.
+    */
+
+    const image =
+    canvas.toDataURL(
+        "image/jpeg",
+        0.90
+    );
+
+
+    /*
+    Increase photo counter.
+    */
+
+    photoCounter++;
+
+
+    photoCount.textContent =
+    photoCounter;
+
+
+    /*
+    Display latest image.
+    */
+
+    latestPhoto.src =
+    image;
+
+
+    latestPhoto.style.display =
+    "block";
+
+
+    noPhoto.style.display =
+    "none";
+
+
+    /*
+    Create download link.
+    */
+
+    const filename =
+    "motion-" +
+    now
+    .toISOString()
+    .replace(
+        /[:.]/g,
+        "-"
+    ) +
+    ".jpg";
+
+
+    downloadLink.href =
+    image;
+
+
+    downloadLink.download =
+    filename;
+
+
+    downloadLink.style.display =
+    "inline-block";
+
+
+    console.log(
+        "PHOTO CAPTURED:",
+        filename
+    );
+
+}
+
+
+
+/* =====================================================
    BUTTONS
----------------------------------- */
+===================================================== */
+
 
 startButton.addEventListener(
     "click",
@@ -343,7 +1301,20 @@ stopButton.addEventListener(
     stopCamera
 );
 
+
+
+/* =====================================================
+   CLEANUP
+===================================================== */
+
+
+window.addEventListener(
+"beforeunload",
+stopCamera
+);
+
 </script>
 
 </body>
+
 </html>
